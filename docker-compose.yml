@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ingest:
+    build: ./ingest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${POSTGRES_DB}
+    volumes:
+      - ./data/well_components.csv:/data/well_components.csv
+    command: python ingest_data_to_db.py
+
+
+
+  api-metadados:
+    build: ./apis/api-metadados
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ingest:
+        condition: service_completed_successfully
+    environment:
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${POSTGRES_DB}
+    ports:
+      - "8000:8000"
+
+
+volumes:
+  pgdata:
