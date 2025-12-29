@@ -1,6 +1,6 @@
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 
 user = os.getenv("DB_USER")
 password = os.getenv("DB_PASSWORD")
@@ -12,6 +12,8 @@ db = os.getenv("DB_NAME")
 engine = create_engine(
     f"postgresql://{user}:{password}@{host}:{port}/{db}"
 )
+
+Base = declarative_base()
 
 local_session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
