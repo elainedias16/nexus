@@ -1,25 +1,39 @@
+from database.db_connection import engine, Base
 import pandas as pd
-import os
-from sqlalchemy import create_engine
+from database.model.component import ComponentModel
+from sqlalchemy.dialects.postgresql import insert
 
-user = os.getenv("DB_USER")
-password = os.getenv("DB_PASSWORD")
-host = os.getenv("DB_HOST")
-port = os.getenv("DB_PORT")
-db = os.getenv("DB_NAME")
+def insert_on_conflict_nothing(table, conn, keys, data_iter):
+    data = [dict(zip(keys, row)) for row in data_iter]
+    stmt = insert(table.table).values(data)
+    
+    stmt = stmt.on_conflict_do_nothing()
+    
+    result = conn.execute(stmt)
+    return result.rowcount
 
-engine = create_engine(
-    f"postgresql://{user}:{password}@{host}:{port}/{db}"
-)
 
-df = pd.read_csv("/data/well_components.csv")
+def ingest_data_to_db():
+    data_path = "/data/well_components.csv"
 
-df.to_sql(
-    "well_components",
-    engine,
-    if_exists="replace",
-    index=False
-)
+    df = pd.read_csv(data_path)
 
-print("Ingestão concluída com sucesso.")
+    Base.metadata.create_all(bind=engine)
 
+    # Convert 'install_timestamp' to date format
+    if 'install_timestamp' in df.columns:
+        df['install_timestamp'] = pd.to_datetime(df['install_timestamp']).dt.date
+
+    df.to_sql(
+        ComponentModel.__tablename__,
+        engine,
+        if_exists="append",
+        index=False,
+        method=insert_on_conflict_nothing
+    )
+    
+    print("Ingestão concluída com sucesso.")
+
+
+if __name__ == "__main__":
+    ingest_data_to_db()

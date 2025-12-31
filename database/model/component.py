@@ -1,15 +1,14 @@
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Index, Boolean, Float, BigInteger
+from sqlalchemy import Column, Integer, String, Index, Boolean, Float, BigInteger, Date, PrimaryKeyConstraint, UniqueConstraint
 from database.db_connection import Base
 
 
-class Component(Base):
+class ComponentModel(Base):
     __tablename__ = "well_components"
 
-    id = Column(BigInteger, primary_key=True, index=True)
+    id = Column(BigInteger, primary_key=True)
     well_name = Column(String)  
     component_type = Column(String)
-    install_timestamp = Column(String)
+    install_timestamp = Column(Date) #YYYY-MM-DD
     manufacturer = Column(String)
     phase_num = Column(Float)
     model = Column(String)  
@@ -29,6 +28,14 @@ class Component(Base):
     removal_timestamp = Column(String)
     last_component = Column(Boolean)
 
-     
 
-
+    __table_args__ = (
+        UniqueConstraint( #composite unique key
+            'well_name',
+            'component_name',
+            'install_timestamp',
+            name='uq_comp',
+            postgresql_nulls_not_distinct=True
+        ),
+    )
+        
