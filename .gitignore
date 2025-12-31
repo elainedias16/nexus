@@ -209,3 +209,4 @@ __marimo__/
 
 nexus
 data
+database/__pycache__/*
