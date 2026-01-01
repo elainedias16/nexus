@@ -7,44 +7,67 @@ from sqlalchemy.orm import Session
 
 route = APIRouter()
 
-@route.get("/id/{component_id}", response_model=ComponentSchema, summary="Busca um componente pelo ID")
+@route.get("/id/{component_id}", response_model=ComponentSchema, summary="Busca um componente pelo ID",
+            responses={200: {"description": "Component found successfully"}, 404: {"description": "Component not found"}, 
+                       500: {"description": "Internal server error"}})
 def get_component_by_id(component_id: int, db: Session = Depends(get_db)):
     """
     Procura um componente pelo seu ID.
     - **id**: id do componente. Deve ser um número inteiro não negativo.
     """
-    
-    controller = ComponentController(db)
-    component = controller.get_component_by_id(component_id)
-    
-    if component is None:
-        raise HTTPException(status_code=404, detail={
-        "error_code": "404_COMPONENT_NOT_FOUND",
-        "message": "O componente com o ID especificado não foi encontrado no banco de dados.",
-        "hint": "Verifique se o ID está correto e tente novamente."
-        }
-       )
+
+    try:       
+        controller = ComponentController(db)
+        component = controller.get_component_by_id(component_id)
         
-    return component
+        if component is None:
+            raise HTTPException(status_code=404, detail={
+            "error_code": "404_COMPONENT_NOT_FOUND",
+            "message": "O componente com o ID especificado não foi encontrado no banco de dados.",
+            "hint": "Verifique se o ID está correto e tente novamente."
+            }
+        )
+            
+        return component
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail={
+            "error_code": "500_INTERNAL_SERVER_ERROR",
+            "message": "Ocorreu um erro interno ao processar a solicitação.",
+            "hint": str(e)
+        }
+    )
 
 
-@route.get("/search", response_model=list[ComponentSchema], summary="Busca componentes pelo tipo e pela data de instalação")
+@route.get("/search", response_model=list[ComponentSchema], summary="Busca componentes pelo tipo e pela data de instalação",
+            responses={200: {"description": "Components found successfully"}, 404: {"description": "No components found"}, 
+                       500: {"description": "Internal server error"}})
 def get_component_by_criteria(type: str, install_timestamp: date, db: Session = Depends(get_db)):
     """
-    Busca componentes pelo tipo e pela data de instalação.
+    Busca componentes do mesmo tipo cuja data de instalação seja maior ou igual à data fornecida.
     - **type**: tipo do componente.
     - **install_timestamp**: data de instalação do componente no formato YYYY-MM-DD.
     """
-    controller = ComponentController(db)
-    filtered_components = controller.get_component_by_criteria(type, install_timestamp)
-    
-    if not filtered_components:
-        raise HTTPException(status_code=404, detail={
-        "error_code": "404_NO_COMPONENTS_FOUND",
-        "message": "Nenhum componente correspondente aos critérios fornecidos foi encontrado no banco de dados.",
-        "hint": "Verifique os critérios de busca e tente novamente."
-        }
-       )
+
+    try:
+        controller = ComponentController(db)
+        filtered_components = controller.get_component_by_criteria(type, install_timestamp)
         
-    return filtered_components
+        if not filtered_components:
+            raise HTTPException(status_code=404, detail={
+            "error_code": "404_NO_COMPONENTS_FOUND",
+            "message": "Nenhum componente correspondente aos critérios fornecidos foi encontrado no banco de dados.",
+            "hint": "Verifique os critérios de busca e tente novamente."
+            }
+        )
+            
+        return filtered_components
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail={
+            "error_code": "500_INTERNAL_SERVER_ERROR",
+            "message": "Ocorreu um erro interno ao processar a solicitação.",
+            "hint": str(e)
+        }
+    )
 
