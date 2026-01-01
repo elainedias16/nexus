@@ -6,7 +6,7 @@ class ComponentSchema(BaseModel):
     id : int
     well_name : str 
     component_type : Optional[str] = None
-    install_timestamp : datetime #YYYY-MM-DD
+    install_timestamp : Optional[datetime] = None #YYYY-MM-DD
     manufacturer : Optional[str] = None
     phase_num : Optional[float] = None
     model : Optional[str] = None  
