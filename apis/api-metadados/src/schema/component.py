@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from typing import Optional
 from pydantic import BaseModel
 
@@ -6,7 +6,7 @@ class ComponentSchema(BaseModel):
     id : int
     well_name : str 
     component_type : Optional[str] = None
-    install_timestamp : Optional[datetime] = None #YYYY-MM-DD
+    install_timestamp : Optional[date] = None #YYYY-MM-DD
     manufacturer : Optional[str] = None
     phase_num : Optional[float] = None
     model : Optional[str] = None  
