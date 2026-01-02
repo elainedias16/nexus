@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routes.route import route as component_router
+from src.routes.route import route as component_router
 
 
 app = FastAPI(title="API de Metadados")

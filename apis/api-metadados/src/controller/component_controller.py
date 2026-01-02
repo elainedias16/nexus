@@ -1,11 +1,11 @@
 from datetime import date
-from repository.component_repository import ComponentRepository
+from src.repository.component_repository import ComponentRepository
 
 class ComponentController:
     def __init__(self, db):
         self.repo = ComponentRepository(db)
 
-    def get_component_by_id(self, component_id: int):
+    def get_component_by_id(self,component_id: int):
         component = self.repo.get_component_by_id(component_id)
         return component 
 

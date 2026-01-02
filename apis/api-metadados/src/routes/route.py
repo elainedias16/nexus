@@ -1,16 +1,17 @@
 from database.db_connection import get_db
-from controller.component_controller import ComponentController
+from src.controller.component_controller import ComponentController
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
-from schema.component import ComponentSchema
+from src.schema.component import ComponentSchema
 from sqlalchemy.orm import Session
+from fastapi import Path
 
 route = APIRouter()
 
-@route.get("/id/{component_id}", response_model=ComponentSchema, summary="Busca um componente pelo ID",
+@route.get("/{component_id}", response_model=ComponentSchema, summary="Busca um componente pelo ID",
             responses={200: {"description": "Component found successfully"}, 404: {"description": "Component not found"}, 
                        500: {"description": "Internal server error"}})
-def get_component_by_id(component_id: int, db: Session = Depends(get_db)):
+def get_component_by_id(component_id: int = Path(..., ge=0), db: Session = Depends(get_db)): #ge=0 (greater or equal = 0) blocks negative ids
     """
     Procura um componente pelo seu ID.
     - **id**: id do componente. Deve ser um número inteiro não negativo.
@@ -21,6 +22,7 @@ def get_component_by_id(component_id: int, db: Session = Depends(get_db)):
         component = controller.get_component_by_id(component_id)
         
         if component is None:
+            print("componente nulo")
             raise HTTPException(status_code=404, detail={
             "error_code": "404_COMPONENT_NOT_FOUND",
             "message": "O componente com o ID especificado não foi encontrado no banco de dados.",
@@ -29,8 +31,10 @@ def get_component_by_id(component_id: int, db: Session = Depends(get_db)):
         )
             
         return component
-    
+    except HTTPException:
+        raise
     except Exception as e:
+        print("erro interno")
         raise HTTPException(status_code=500, detail={
             "error_code": "500_INTERNAL_SERVER_ERROR",
             "message": "Ocorreu um erro interno ao processar a solicitação.",
@@ -62,7 +66,8 @@ def get_component_by_criteria(type: str, install_timestamp: date, db: Session = 
         )
             
         return filtered_components
-    
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail={
             "error_code": "500_INTERNAL_SERVER_ERROR",

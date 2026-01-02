@@ -7,7 +7,7 @@ class ComponentRepository:
         self.db = db
         
     def get_component_by_id(self, component_id: int):
-        return self.db.query(ComponentModel).get(component_id)
+        return self.db.get(ComponentModel, component_id)
 
     def get_component_by_criteria(self, type: str, install_timestamp: date):
         component_type_after_date = self.db.query(ComponentModel).filter(
