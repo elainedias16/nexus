@@ -72,7 +72,6 @@ def get_component_by_id(component_id: int = Path(..., ge=0), db: Session = Depen
     except HTTPException:
         raise
     except Exception as e:
-        print("erro interno")
         raise HTTPException(status_code=500, detail={
             "error_code": "500_INTERNAL_SERVER_ERROR",
             "message": "Ocorreu um erro interno ao processar a solicitação.",

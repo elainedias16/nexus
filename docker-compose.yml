@@ -54,6 +54,16 @@ services:
     volumes:
       - ./database:/app/database
 
+  api-series:
+    build: ./apis/api-series
+    container_name: api-series
+    ports: 
+      - "8001:8001" 
+    environment:
+      SIMULATION_DATA_PATH: ${SIMULATION_DATA_PATH}
+    volumes:
+      - ./data/out.json:/app/data/out.json
+
 
 volumes:
   pgdata:
