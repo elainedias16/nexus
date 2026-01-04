@@ -37,5 +37,11 @@ class ComponentModel(Base):
             name='uq_comp',
             postgresql_nulls_not_distinct=True
         ),
+        # UniqueConstraint( #composite unique key
+        #     'well_name',
+        #     'component_name',
+        #     'model',
+        #     name='uq_comp_v2',
+        #     postgresql_nulls_not_distinct=True),
     )
         

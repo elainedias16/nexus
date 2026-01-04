@@ -143,6 +143,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.venvnexus/
 
 # Spyder project settings
 .spyderproject
@@ -210,3 +211,4 @@ __marimo__/
 nexus
 data
 database/__pycache__/*
+
