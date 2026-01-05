@@ -1,3 +1,6 @@
 fastapi
 uvicorn[standard]
 psycopg2-binary==2.9.9
+pytest
+httpx
+pytest-mock

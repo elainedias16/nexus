@@ -1,5 +1,4 @@
-from fastapi import APIRouter
-from fastapi import Path
+from fastapi import APIRouter, Path, HTTPException
 from src.controller.simulation_controller import SimulationController
 from src.repository.simulation_repository import SimulationRepository
 from src.settings import settings
@@ -8,7 +7,7 @@ route = APIRouter()
 
 
 @route.get("/components/{component_id}/simulation", 
-            responses={200: {"description": "Simulation completed successfully"}, 
+            responses={200: {"description": "Simulation completed successfully"},
                        500: {"description": "Internal server error"}} , summary = "Simula a série temporal de um componente específico")
 def simulate_series(component_id: int = Path(..., ge=0)):
     """
@@ -20,8 +19,15 @@ def simulate_series(component_id: int = Path(..., ge=0)):
         repo = SimulationRepository(settings.data_path)
         controller = SimulationController(repo)
         return controller.stream_data(settings.chunk_size)
+    
+    except HTTPException:
+        raise
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=500, detail={
+            "error_code": "500_INTERNAL_SERVER_ERROR",
+            "message": "Ocorreu um erro interno ao processar a solicitação.",
+            "hint": str(e)
+        })  
     
 
 
