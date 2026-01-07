@@ -45,23 +45,16 @@ Renomeie o arquivo `.env.example` para `.env` e ajuste as variáveis se achar ne
 
 
 ### Rodando separadamente 
-```
-$docker compose up postgres --build
-```
 
 ```
-$docker compose up ingest --build
+$docker compose up [nome_do_servico] --build
 ```
 
-```
-$docker compose up api-metadados --build
-```
+Os serviços definidos no `docker-compose` são: *postgres*, *ingest*, *api-metadados* e *api-series*.  
+A flag `--build` é necessária apenas para a criação das imagens.
 
-```
-$docker compose up api-series --build
-```
+A API de metadados depende do container do **PostgreSQL** e da **ingestão inicial dos dados**. Para seu correto funcionamento, ambos os serviços precisam estar disponíveis. Após a ingestão ser concluída com sucesso, não é necessário executá-la novamente.
 
-A API de metadados depende do container do PostgreSQL e da ingestão inicial dos dados. Para seu correto funcionamento, ambos os serviços precisam estar em execução. Após a ingestão ser concluída com sucesso, não é necessário executá-la novamente.
 
 ### Rodando de forma conjunta:
 
@@ -71,6 +64,12 @@ $docker compose up --build
 
 ### Para parar os serviços:
 
+
+```
+$docker compose stop
+```
+
+## Para remover as imagens 
 
 ```
 $docker compose stop
@@ -87,8 +86,6 @@ $docker compose run --rm api-metadados pytest tests/test_component.py -v
 ```
 $docker compose run --rm api-series pytest tests/test_time_series_simulation.py -v
 ```
-
-
 
 ## 📄 Documentação da API (Swagger)
 
@@ -108,7 +105,7 @@ Para avaliar o tempo de resposta total:
 curl -w "\nTTFB: %{time_starttransfer}s\nTotal: %{time_total}s\nSize: %{size_download} bytes\n"      -o /dev/null      -s      http://localhost:8001/components/1/simulation
 ```
 
-Para ver o download do arquivo direto no navegador, copiar e colar a url direto no navegador, enquanto roda a api-series:
+Para ver o download do arquivo direto no navegador, copiar e colar a url direto no navegador, após rodar a api-series:
 
 ```
 http://localhost:8001/components/1/simulation
