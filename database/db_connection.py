@@ -14,11 +14,11 @@ engine = create_engine(
 
 Base = declarative_base()
 
-local_session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def get_db():
-    db = local_session() # new session for every request
+    db = SessionLocal() # new session for every request
     try:
         yield db
         print("DB session yielded successfully.")
