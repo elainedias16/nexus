@@ -18,7 +18,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def get_db():
-    db = SessionLocal() # new session for every request
+    db = SessionLocal() # New session for every request
     try:
         yield db
         print("DB session yielded successfully.")

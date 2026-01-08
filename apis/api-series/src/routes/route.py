@@ -16,8 +16,7 @@ def simulate_series(component_id: int = Path(..., ge=0)):
     - **component_id**: ID do componente para o qual a série temporal será simulada
     """
     try :
-        repo = SimulationRepository(settings.data_path)
-        controller = SimulationController(repo)
+        controller = SimulationController(settings.data_path)
         return controller.stream_data(settings.chunk_size)
     
     except HTTPException:
