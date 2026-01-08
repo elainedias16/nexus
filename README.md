@@ -1,6 +1,6 @@
 # 🚀 Projeto Nexus
 
-O **Nexus** é um projeto criado para gerenciar e servir dados de **componentes e suas séries temporais de simulação**. O projeto foi desenvolvido com foco em eficiência para lidar com **grandes volumes de dados**, explorando estratégias como **streaming** e **compressão (GZip)** para otimização.
+O **Nexus** é um projeto criado para gerenciar e servir dados de **componentes e suas séries temporais de simulação**. O projeto foi desenvolvido com foco em eficiência para lidar com **grandes volumes de dados**.
 
 ---
 
@@ -69,10 +69,10 @@ $docker compose up --build
 $docker compose stop
 ```
 
-## Para remover as imagens 
+## Para remover containers, volumes e todas as imagens do projeto
 
 ```
-$docker compose stop
+$docker compose down -v --rmi all
 ```
 
 ## 🧪 Testes automatizados
