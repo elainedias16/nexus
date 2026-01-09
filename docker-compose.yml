@@ -17,10 +17,9 @@ services:
       retries: 5
 
   ingest:
-    # build: ./ingest
     build:
       context: .
-      dockerfile: ingest/Dockerfile
+      dockerfile: apis/api-metadados/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -30,14 +29,15 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DB: ${POSTGRES_DB}
-    volumes:
-      - ./data/well_components.csv:/data/well_components.csv
-    command: python ingest_data_to_db.py
+    command: python -m src.database.ingest_data_to_db
+    restart: "no"
 
 
 
   api-metadados:
-    build: ./apis/api-metadados
+    build:
+      context: .                          
+      dockerfile: ./apis/api-metadados/Dockerfile
     depends_on:
       postgres:
         condition: service_healthy
@@ -51,8 +51,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "8000:8000"
-    volumes:
-      - ./database:/app/database
+
 
   api-series:
     build: ./apis/api-series

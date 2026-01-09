@@ -41,19 +41,7 @@ O projeto utiliza uma estrutura desacoplada para garantir manutenibilidade. Ness
 
 ## 🕹️ Como Rodar o Projeto
 
-Renomeie o arquivo `.env.example` para `.env` e ajuste as variáveis se achar necessário.
-
-
-### Rodando separadamente 
-
-```
-$docker compose up [nome_do_servico] --build
-```
-
-Os serviços definidos no `docker-compose` são: *postgres*, *ingest*, *api-metadados* e *api-series*.  
-A flag `--build` é necessária apenas para a criação das imagens.
-
-A API de metadados depende do container do **PostgreSQL** e da **ingestão inicial dos dados**. Para seu correto funcionamento, ambos os serviços precisam estar disponíveis. Após a ingestão ser concluída com sucesso, não é necessário executá-la novamente.
+Renomeie o arquivo `.env.example` para `.env` e ajuste as variáveis se achar necessário. Certifique-se de conferir se as porta utilizadas no docker compose não estão sendo utilizadas por outro processo.
 
 
 ### Rodando de forma conjunta:

@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Path, HTTPException
 from src.controller.simulation_controller import SimulationController
-from src.repository.simulation_repository import SimulationRepository
 from src.settings import settings
 
 route = APIRouter()

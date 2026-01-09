@@ -1,4 +1,4 @@
-from database.db_connection import get_db
+from src.database.db_connection import get_db
 from src.controller.component_controller import ComponentController
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException

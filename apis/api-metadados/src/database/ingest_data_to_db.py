@@ -1,6 +1,6 @@
-from database.db_connection import engine, Base
+from src.database.db_connection import engine, Base
 import pandas as pd
-from database.model.component import ComponentModel
+from src.database.model.component import ComponentModel
 from sqlalchemy.dialects.postgresql import insert
 
 def insert_on_conflict_nothing(table, conn, keys, data_iter):

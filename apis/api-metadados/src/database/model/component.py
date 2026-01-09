@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Index, Boolean, Float, BigInteger, Date, PrimaryKeyConstraint, UniqueConstraint
-from database.db_connection import Base
+from src.database.db_connection import Base
 
 
 class ComponentModel(Base):

@@ -1,0 +1,6 @@
+.venvnexus
+.git
+__pycache__
+*.pyc
+LICENSE
+README.md

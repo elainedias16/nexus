@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from database.model.component import ComponentModel 
+from src.database.model.component import ComponentModel 
 from datetime import date
 
 class ComponentRepository:
