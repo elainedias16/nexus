@@ -29,6 +29,7 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DB: ${POSTGRES_DB}
+      COMPONENTS_DATA_PATH: ${COMPONENTS_DATA_PATH}
     command: python -m src.database.ingest_data_to_db
     restart: "no"
 

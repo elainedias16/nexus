@@ -5,7 +5,6 @@ from fastapi.middleware.gzip import GZipMiddleware
 
 app = FastAPI(title="API de Simulações de Séries Temporais")
 
-app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 app.include_router(
     simulation_router,

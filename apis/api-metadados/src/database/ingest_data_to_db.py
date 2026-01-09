@@ -2,6 +2,7 @@ from src.database.db_connection import engine, Base
 import pandas as pd
 from src.database.model.component import ComponentModel
 from sqlalchemy.dialects.postgresql import insert
+import os
 
 def insert_on_conflict_nothing(table, conn, keys, data_iter):
     """
@@ -30,7 +31,7 @@ def insert_on_conflict_nothing(table, conn, keys, data_iter):
 
 # The method that ingest data needs to have access to the engine and Base directly.
 def ingest_data_to_db():
-    data_path = "/data/well_components.csv"
+    data_path = os.getenv("COMPONENTS_DATA_PATH")
 
     df = pd.read_csv(data_path)
 

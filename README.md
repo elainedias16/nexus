@@ -41,23 +41,25 @@ O projeto utiliza uma estrutura desacoplada para garantir manutenibilidade. Ness
 
 ## 🕹️ Como Rodar o Projeto
 
-Renomeie o arquivo `.env.example` para `.env` e ajuste as variáveis se achar necessário. Certifique-se de conferir se as porta utilizadas no docker compose não estão sendo utilizadas por outro processo.
+Renomeie o arquivo `.env.example` para `.env` e ajuste as variáveis se achar necessário. Certifique-se que as portas utilizadas no docker compose não estão sendo utilizadas por outro processo.
 
 
-### Rodando de forma conjunta:
+### Rodando de forma conjunta
 
 ```
 $docker compose up --build
 ```
 
-### Para parar os serviços:
+### Para parar os serviços
 
 
 ```
 $docker compose stop
 ```
 
-## Para remover containers, volumes e todas as imagens do projeto
+### Para remover containers, volumes e todas as imagens do projeto
+
+Esse comando também apaga os dados do banco de dados.
 
 ```
 $docker compose down -v --rmi all
