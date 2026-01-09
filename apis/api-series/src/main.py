@@ -1,7 +1,5 @@
 from fastapi import FastAPI
 from src.routes.route import route as simulation_router
-from fastapi.middleware.gzip import GZipMiddleware
-
 
 app = FastAPI(title="API de Simulações de Séries Temporais")
 
